@@ -19,10 +19,10 @@ class _RegisterPageState extends State<RegisterPage> {
   TimeOfDay _selectedDepartureTime = TimeOfDay.now();
 
   final List<String> _boatDetailsList = [
-    'Boat Detail 1',
-    'Boat Detail 2',
-    'Boat Detail 3',
-    'Boat Detail 4',
+    'Kayak',
+    'Yamaha',
+    'Barracuda',
+    'Catamaran',
   ];
 
   @override
