@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boat_rental_app/register_page.dart';
-import 'package:boat_rental_app/createboat.dart';
+import 'package:boat_rental_app/selectboat.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Change the background color
       appBar: AppBar(
         title: Text('Boat Rental App'),
       ),
@@ -31,7 +33,16 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Welcome to the Boat Rental App!'),
+            Image.asset('assets/boat.png', width: 200), // Add an image
+            SizedBox(height: 32),
+            Text(
+              'Welcome to the Boat Rental App!',
+              style: GoogleFonts.roboto(
+                // Use a custom font
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
@@ -50,8 +61,9 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => CreateBoat()),
                 );
               },
-              child: Text('Create a Boat'),
+              child: Text('Select Boat'),
             ),
+            SizedBox(height: 32),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'selectboat.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -11,9 +12,18 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _addressController = TextEditingController();
   TextEditingController _phoneNoController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _boatDetailsController = TextEditingController();
-  TextEditingController _bookingDateController = TextEditingController();
-  TextEditingController _departureDateController = TextEditingController();
+  String? _selectedBoatDetail;
+  DateTime _selectedBookingDate = DateTime.now();
+  DateTime _selectedDepartureDate = DateTime.now();
+  TimeOfDay _selectedBookingTime = TimeOfDay.now();
+  TimeOfDay _selectedDepartureTime = TimeOfDay.now();
+
+  final List<String> _boatDetailsList = [
+    'Boat Detail 1',
+    'Boat Detail 2',
+    'Boat Detail 3',
+    'Boat Detail 4',
+  ];
 
   @override
   void dispose() {
@@ -21,9 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
     _addressController.dispose();
     _phoneNoController.dispose();
     _emailController.dispose();
-    _boatDetailsController.dispose();
-    _bookingDateController.dispose();
-    _departureDateController.dispose();
     super.dispose();
   }
 
@@ -33,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: Text('Register'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -92,65 +99,137 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _emailController,
               ),
               SizedBox(height: 16),
-              TextFormField(
+              DropdownButtonFormField(
                 decoration: InputDecoration(
                   labelText: 'Boat Details',
                 ),
+                value: _selectedBoatDetail,
+                items: _boatDetailsList.map((boatDetail) {
+                  return DropdownMenuItem(
+                    value: boatDetail,
+                    child: Text(boatDetail),
+                  );
+                }).toList(),
+                onChanged: (selectedBoatDetail) {
+                  setState(() {
+                    _selectedBoatDetail = selectedBoatDetail as String?;
+                  });
+                },
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the boat details';
+                  if (value == null) {
+                    return 'Please select a boat detail';
                   }
                   return null;
                 },
-                controller: _boatDetailsController,
               ),
               SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Booking Date & Time',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the booking date and time';
-                  }
-                  return null;
-                },
-                controller: _bookingDateController,
-                onTap: () async {
-                  DateTime bookingDate = DateTime(1900);
-                  FocusScope.of(context).requestFocus(new FocusNode());
 
-                  DateTime? selectedDate = await showDatePicker(
+              //Date Time
+              ListTile(
+                leading: Icon(Icons.date_range),
+                title: Text('Booking Date'),
+                subtitle: Text(
+                  '${_selectedBookingDate.toLocal()}'.split(' ')[0],
+                ),
+                onTap: () async {
+                  final picked = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: _selectedBookingDate,
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2100),
                   );
-                  if (selectedDate != null) {
-                    TimeOfDay? time = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
-                    if (time != null) {
-                      DateTime selectedDate = DateTime(
-                        bookingDate.year,
-                        bookingDate.month,
-                        bookingDate.day,
-                        time.hour,
-                        time.minute,
-                      );
-                      // Do something with the selected date and time
-                      _bookingDateController.text = bookingDate.toString();
-                    }
+                  if (picked != null) {
+                    setState(() {
+                      _selectedBookingDate = picked;
+                    });
                   }
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('Booking Time'),
+                subtitle: Text(
+                  '${_selectedBookingTime.format(context)}',
+                ),
+                onTap: () async {
+                  final picked = await showTimePicker(
+                    context: context,
+                    initialTime: _selectedBookingTime,
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      _selectedBookingTime = picked;
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.date_range),
+                title: Text('Departure Date'),
+                subtitle: Text(
+                  '${_selectedDepartureDate.toLocal()}'.split(' ')[0],
+                ),
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDepartureDate,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2100),
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      _selectedDepartureDate = picked;
+                    });
+                  }
+                },
+              ),
+
+              ListTile(
+                leading: Icon(Icons.access_time),
+                title: Text('Departure Time'),
+                subtitle: Text(
+                  '${_selectedDepartureTime.format(context)}',
+                ),
+                onTap: () async {
+                  final picked = await showTimePicker(
+                    context: context,
+                    initialTime: _selectedDepartureTime,
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      _selectedDepartureTime = picked;
+                    });
+                  }
+                },
+              ),
+
+              //F
               SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // TODO: submit the form
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Registration Successful'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CreateBoat()),
+                                  );
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: Text('Register'),
