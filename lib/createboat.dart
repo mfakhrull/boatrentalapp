@@ -13,14 +13,14 @@ class _CreateBoatState extends State<CreateBoat> {
   final _boatNameController = TextEditingController();
   final _boatDescriptionController = TextEditingController();
 
-  void _navigateToDetails() {
+  void _navigateToDetails(String boatName, int boatCapacity, double boatRate) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ViewBoatPage(
-          boatName: _boatNameController.text,
-          boatCapacity: 4,
-          boatRate: 50.0,
+          boatName: boatName,
+          boatCapacity: boatCapacity,
+          boatRate: boatRate,
         ),
       ),
     );
@@ -60,13 +60,61 @@ class _CreateBoatState extends State<CreateBoat> {
               ),
               SizedBox(height: 16),
               GestureDetector(
-                onTap: _navigateToDetails,
+                onTap: () => _navigateToDetails('Boat Model 1', 4, 50.0),
                 child: Card(
                   clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    'assets/yaris_car.png',
-                    fit: BoxFit.cover,
-                    height: 200,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/yaris_car.png',
+                        fit: BoxFit.cover,
+                        height: 200,
+                      ),
+                      ListTile(
+                        title: Text('Boat Model 1'),
+                        subtitle: Text('Capacity: 4, Rate per hour: \$50.0'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              GestureDetector(
+                onTap: () => _navigateToDetails('Boat Model 2', 6, 75.0),
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/yaris_car.png',
+                        fit: BoxFit.cover,
+                        height: 200,
+                      ),
+                      ListTile(
+                        title: Text('Boat Model 2'),
+                        subtitle: Text('Capacity: 6, Rate per hour: \$75.0'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              GestureDetector(
+                onTap: () => _navigateToDetails('Boat Model 3', 8, 100.0),
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/yaris_car.png',
+                        fit: BoxFit.cover,
+                        height: 200,
+                      ),
+                      ListTile(
+                        title: Text('Boat Model 3'),
+                        subtitle: Text('Capacity: 8, Rate per hour: \$100.0'),
+                      ),
+                    ],
                   ),
                 ),
               ),

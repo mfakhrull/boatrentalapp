@@ -100,7 +100,7 @@ class _ViewBoatPageState extends State<ViewBoatPage> {
               decoration: InputDecoration(
                 labelText: 'Discount Code',
               ),
-              onChanged: (value) {
+              onSubmitted: (value) {
                 setState(() {
                   _discountCode = value;
                   _calculateTotalPayment();
