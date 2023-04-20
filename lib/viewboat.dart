@@ -108,7 +108,7 @@ class _ViewBoatPageState extends State<ViewBoatPage> {
             SizedBox(height: 8.0),
             Text('Capacity: ${widget.boatCapacity} people'),
             SizedBox(height: 8.0),
-            Text('Rate per hour: \$${widget.boatRate.toStringAsFixed(2)}'),
+            Text('Rate per hour: RM${widget.boatRate.toStringAsFixed(2)}'),
             SizedBox(height: 16.0),
             Text(
               'Rental Rates',
